@@ -1,0 +1,38 @@
+{
+  "id": "uds_probe",
+  "title": "UDS Probe",
+  "description": "Reads engine/gearbox basics (rpm, speed, coolant, gear) purely over READ-ONLY diagnostics - no car-data SOME/IP, so it installs on any unit",
+  "version": "1.0.0",
+  "vendor": "custom",
+  "loggingId": "OAUP",
+  "iconGlyph": "UD",
+
+  "_comment": "Only the diagnostic transport (InternalTasu) is declared, marked _optional. It is present on this car (M Vitals / Fault Scanner use it). No car-data SOME/IP interfaces are declared, so this app bypasses the generateSomeIpInterfaces 'nothing found' failure entirely. Everything is read with READ-ONLY UDS (0x22) / OBD (0x01) via kit/readonly-diag.js.",
+  "signals": {
+    "com.harman.infotainment.systemfunctions.tasu.tasu.InternalTasu": {
+      "_instances": "SystemFunctionsInternalTasuInst1",
+      "_methods": ["sendTasuRequest"],
+      "_broadcasts": ["sendTasuResponse"],
+      "_optional": "the diagnostic transport (read-only) - without it nothing can be read"
+    }
+  },
+
+  "screens": [
+    {
+      "name": "MAIN",
+      "kind": "canvas",
+      "title": "UDS Probe",
+      "buttons": [
+        ["BTN_READ", "Read now"],
+        ["BTN_PAGE", "Next page"],
+        ["BTN_SAVE", "Save report"],
+        ["BTN_SETTINGS", "Settings"]
+      ]
+    }
+  ],
+
+  "settings": [
+    {"key": "usb", "label": "Save the report to a USB stick if present", "type": "bool", "default": true},
+    {"key": "autorun", "label": "Read automatically when opened", "type": "bool", "default": true}
+  ]
+}
